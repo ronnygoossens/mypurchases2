@@ -3,6 +3,8 @@ import 'firebase/auth';
 
 import * as APIKEYS from '../../constants/apikeys';
 
+// rgo removed the apikeys :)
+
 const config = {
     apiKey:APIKEYS.apikey,
     authDomain:APIKEYS.authDomain,
