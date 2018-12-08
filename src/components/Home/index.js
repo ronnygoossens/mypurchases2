@@ -39,9 +39,11 @@ class ListFirebase extends Component {
       });
 
       //this.state = { ...INITIAL_STATE };
+      this.getData=this.getData.bind(this);
     };
 
     getData(values){
+    
       let messagesVal = values;
       let messages = _(messagesVal)
                         .keys()
@@ -80,50 +82,48 @@ class StoreFirstData extends Component {
     //Firebase.database();
     super(props);
     this.state = { ...INITIAL_STATE };
+    this.storeData=this.storeData.bind(this);
+    this.onKeyup=this.onKeyup.bind(this);
+    this.onChange=this.onChange.bind(this);
+    this.onSubmit=this.onSubmit.bind(this);
+    
   };
 
+  storeData = (e) => {
+   
+    e.preventDefault();
+    let dbCon = Firebase.database().ref('/messages');
+    dbCon.push({
+      message: trim(this.state.message)
+     })
+     .then(authUser => {
+      this.setState({ ...INITIAL_STATE });
+      //this.props.history.push(ROUTES.HOME);
+      alert("dit is gelukt");
+    })
+    .catch(error => {
+ //     console.log("failed to post...");
+   //   alert("Error db");
+      this.setState({ error });
+    });
+//    e.preventDefault();
+  };
 
   onSubmit(e) {
-    if(e.keyCode === 13 && trim(e.target.value) !== ''){
-      e.preventDefault();
-      console.log(e.target.value);
-      let dbCon = Firebase.database().ref('/messages');
-      dbCon.push({
-        message: trim(e.target.value)
-       })
-       .then(authUser => {
-        this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.HOME);
-      })
-      .catch(error => {
-        this.setState({ error });
-      });
-      e.preventDefault();
-      }
-    }
-  
-  onChange = event => {
+   
+    this.storeData(e);
+  };
+
+    onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
   
   onKeyup(e){
-    if(e.keyCode === 13 && trim(e.target.value) !== ''){
-      e.preventDefault();
-      
-      let dbCon = Firebase.database().ref('/messages');
-      dbCon.push({
-        message: trim(e.target.value)
-       })
-       .then(authUser => {
-        this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.HOME);
-      })
-      .catch(error => {
-        this.setState({ error });
-      });
-      e.preventDefault();
-      }
+    e.preventDefault();
+    if(e.keyCode === 13 && trim(e.target.value) !== '')
+    {   this.storeData(e)}
     }
+
       render() {
     
     /*    const {
