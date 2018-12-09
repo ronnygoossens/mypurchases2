@@ -14,7 +14,6 @@ const INITIAL_STATE = {
 
 class StoreFirstData extends Component {
     constructor(props) {
-      //Firebase.database();
       super(props);
       this.state = { ...INITIAL_STATE };
       this.storeData=this.storeData.bind(this);
