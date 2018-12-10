@@ -1,6 +1,5 @@
 import app from 'firebase/app';
 import 'firebase/auth';
-
 import * as APIKEYS from '../../constants/apikeys';
 
 // rgo removed the apikeys :)
@@ -20,6 +19,7 @@ const config = {
 class Firebase {
     constructor() {
       app.initializeApp(config);
+      //const database = app.database();
       this.auth = app.auth();
     }
    
@@ -41,3 +41,4 @@ class Firebase {
       
 }
 export default Firebase;
+

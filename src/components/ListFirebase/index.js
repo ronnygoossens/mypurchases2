@@ -41,7 +41,7 @@ class ListFirebase extends Component {
       return (
           <div key={message.key} className="card">
             <div className="card-content">
-              <Message thekey={message.key} message = {message.message} />
+              <Message thekey={message.key} message = {message.message} db={this.props.db}/>
             </div>
           </div>
       )

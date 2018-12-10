@@ -1,11 +1,8 @@
 import Firebase from 'firebase';
 import trim from 'trim';
-
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-
 import { withFirebase } from '../Firebase';
-
 import { compose } from 'recompose';
 
 const INITIAL_STATE = {
@@ -44,12 +41,11 @@ class StoreFirstData extends Component {
     };
   
     onSubmit(e) {
-     
-      this.storeData(e);
+     this.storeData(e);
     };
   
-      onChange = event => {
-      this.setState({ [event.target.name]: event.target.value });
+    onChange = event => {
+     this.setState({ [event.target.name]: event.target.value });
     };
     
     onKeyup(e){
