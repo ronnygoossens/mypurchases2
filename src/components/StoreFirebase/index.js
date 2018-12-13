@@ -4,9 +4,13 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 import { compose } from 'recompose';
+import * as ROUTES from '../../constants/routes';
+import createHistory from 'history/createBrowserHistory';
+
+
 
 const INITIAL_STATE = {
-    message:''
+    message:'',smessage:""
     };
 
 class StoreFirstData extends Component {
@@ -17,9 +21,12 @@ class StoreFirstData extends Component {
       this.onKeyup=this.onKeyup.bind(this);
       this.onChange=this.onChange.bind(this);
       this.onSubmit=this.onSubmit.bind(this);
-      
+      this.onSearch=this.onSearch.bind(this);
+     
     };
   
+    history = createHistory();
+
     storeData = (e) => {
      
       e.preventDefault();
@@ -29,7 +36,7 @@ class StoreFirstData extends Component {
        })
        .then(authUser => {
         this.setState({ ...INITIAL_STATE });
-        //this.props.history.push(ROUTES.HOME);
+        this.history.push(ROUTES.HOME);
         //alert("dit is gelukt");
       })
       .catch(error => {
@@ -39,8 +46,24 @@ class StoreFirstData extends Component {
       });
   //    e.preventDefault();
     };
-  
-    onSubmit(e) {
+
+    onSearch(e) {
+      Firebase.database().ref('/messages')
+      .equalTo(this.state.smessage)
+      .on('value', function (snapshot) {
+          if (snapshot.val() === null) {
+              console.log('Email is not present');
+          }else{
+              console.log('Email is present');
+              var key = snapshot.key;
+              var childData = snapshot.val();
+              //Your Code goes Here
+          }
+      });
+
+      };  
+    
+     onSubmit(e) {
      this.storeData(e);
     };
   
@@ -58,9 +81,12 @@ class StoreFirstData extends Component {
       
       const isInvalid =
          this.state.username === '';
-  
+      const isSInvalid =
+         this.state.smessage === '';
+
       return (
-        <form onSubmit={this.onSubmit}>
+        <div>
+          <form onSubmit={this.onSubmit}>
              <textarea
               className="textarea"
               name="message"
@@ -73,9 +99,22 @@ class StoreFirstData extends Component {
            <button disabled={isInvalid} type="submit">
             Push data
           </button>
-  
+          </form>
+
+          <form onSubmit={this.onSearch}>
+             <input type="text" 
+              className="text"
+              name="smessage"
+              placeholder="Search a message"
+              cols="100"
+              onChange={this.onChange}
+              value={this.state.smessage}>
+            </input>
+           <button disabled={isSInvalid} type="submit">
+            Search
+          </button>  
           {this.state.error && <p>{this.state.error.message}</p>}
-        </form>
+        </form></div>
       );
     }
   }
